@@ -132,68 +132,83 @@
 
 ## Your Development Log
 
-### Entry 1 - [Date and Time]
-**What I did**:
+### Entry 1 - [November 11,2026,10 pm]
+**What I did**:forked the repository and changed the student id to my id 
 
 **Details**:
+- forked  the starter repository and renamed it 
+- changed the student id to my id 
+- ran the original code and saved the output (23/26 context switches 11/13 completed and the watchdog stopped it)
+- it was easy because it is the same steps as assignment 1, so i already had experience 
 
-**Challenges**:
+**Challenges**:my git email was not my university email because i changed it recently 
 
-**Solution**:
+**Solution**:i changed it back to my university email 
 
-**Time spent**:
+**Time spent**: about 1 hour 
 
 ---
 
-### Entry 2 - [Date and Time]
-**What I did**:
+### Entry 2 - [November 12,2026, 8 pm]
+**What I did**:tried to understand the whole assignment and did feature 1
 
 **Details**:
+- read the code to understand what i need to do in feature 1
+- added a lock to the ready queue in add(), poll(),processOf(),and snapshot()
+- ran the program 5 times to check for errors 
 
-**Challenges**:
+**Challenges**:in one run the watchdog appeared and completed was 12/13 even though all 13 processes said finished also i got errors because of the braces when i edited add()
 
-**Solution**:
+**Solution**:i found that p2 and p4 finished at the same time so one update of the completed counter was lost and feature 2 fixes this i fixed the braces and the errors went away
 
-**Time spent**:
+**Time spent**:2 hours 
 
 ---
 
-### Entry 3 - [Date and Time]
-**What I did**:
+### Entry 3 - [November 13, 2026, 8 pm]
+**What I did**:worked on feature 2 and committed it  
 
 **Details**:
+- used one lock for each counter because each counter is separate 
+- protected the 3 update methods and the 3 getters 
+- the first three verification lines were right in 5 runs 
 
-**Challenges**:
+**Challenges**:deciding between one lock for all counters or one lock for each counter 
 
-**Solution**:
+**Solution**:i chose one lock for each counter so updating one counter does not stop the others
 
-**Time spent**:
+**Time spent**:2 hours 
 
 ---
 
-### Entry 4 - [Date and Time]
-**What I did**:
+### Entry 4 - [November 14 , 2026 , 9 am]
+**What I did**:tried to understand feature 3 more and did it 
 
 **Details**:
+- added a semaphore that counts the processes in the ready queue 
+- replaced the busy waiting with acquire()
+- ran the program 5 times and all checks were right  
 
-**Challenges**:
+**Challenges**: i wrote the code wrong a few times and some lines got deleted by mistake 
 
-**Solution**:
+**Solution**: i tried again then i started to understand it and i checked my changes before the commit 
 
-**Time spent**:
+**Time spent**:3 hours 
 
 ---
 
-### Entry 5 - [Date and Time]
-**What I did**:
+### Entry 5 - [November 15 , 2026 , 7 pm]
+**What I did**: wrote the development log and the reflection
 
 **Details**:
+- wrote entries 1 to 4 of the development log
+- answered the 4 reflection questions
 
-**Challenges**:
+**Challenges**: remembering the details and times of each day
 
-**Solution**:
+**Solution**: i used my saved output and the times of my commits on github
 
-**Time spent**:
+**Time spent**: about 2 hours
 
 ---
 
@@ -240,7 +255,7 @@
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+i learned that synchronization makes the result always correct. without it the results were different every time for example context switches were 23 instead of 26 .this is the race condition. two threads read the same value and change it at the same time so one update is lost. with reentrantlock only one thread can enter the critical section this is mutual exclusion 
 
 ## Question 2: What was the most challenging part of this assignment?
 
@@ -248,7 +263,7 @@
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+The most challenging part was feature 3. i did not understand at first how the semaphore replaces the busy waiting. i wrote the code wrong a few times and some lines got deleted by mistake.it was also hard to understand why the last CPU must call release(totalCPUs).without it the other CPUs would wait forever 
 
 ## Question 3: How did you overcome the challenges you faced?
 
@@ -256,7 +271,7 @@
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+I read the Chapter 5 slides about semaphores again. i did the code step by step and saved after each change. i ran the program 5 times after each feature to make sure all checks were right i checked my changes with git diff before every commit. when something was deleted by mistake i found it and fixed it
 
 ## Question 4: Where can synchronization concepts be applied in real-world applications?
 
@@ -264,7 +279,7 @@
 
 **Your Answer:** *(5-7 sentences)*
 
-[Write your answer here.]
+Synchronization is used in banking  so two withdrawals from the same account do not give a wrong balance. it is used in booking tickets so two people cannot book the same seat. it is used in online shopping when the stock is only one item. these are like my counters, because they are shared data that many threads update. A lock protects the critical section so only one update happens at a time
 
 ### Optional: What would you like to learn more about?
 
