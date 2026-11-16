@@ -229,13 +229,13 @@
 
 > 💡 **TIP:** Fill this in **last**, after all entries are written.
 
-**Total time spent on assignment**: [X hours]
+**Total time spent on assignment**: about 12 hours
 
-**Most challenging part**:
+**Most challenging part**: feature 3 the semaphore and cpu 
 
-**Most interesting learning**:
+**Most interesting learning**: race condition loses update and gives different result 
 
-**What I would do differently next time**:
+**What I would do differently next time**: start erleaer and take more to understand 
 
 ---
 
@@ -313,20 +313,29 @@ Synchronization is used in banking  so two withdrawals from the same account do 
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+ In my starter run context switches were 23 instead of 26 so 3 updates were lost and completed was 11 instead of 13 so the watchdog stopped the program.this can happen on a real machine because the OS can stop a thread between the read and the write It is hard to find because it happens rarely and the result changes every run
 
 Verification block of the **original starter**:
 ```
-[Paste the verification block (or the exception/watchdog message) of the starter here]
-```
+ ═══ VERIFICATION (expected values are computed from YOUR seed) ═══
+  Context switches (quanta executed)     expected 26       observed 23       ✘ MISMATCH
+  Completed processes                    expected 13       observed 11       ✘ MISMATCH
+  Total service time (ms)                expected 93420    observed 81888    ✘ MISMATCH
+  Busy-waiting polls (must be 0)         expected 0        observed 826      ✘ MISMATCH
+  ✘ At least one check failed (see the ✘ lines above): a race condition or busy waiting is still present.
+  ```
 
 Verification block of **my final version**:
 ```
-[Paste the verification block of your final version here (all lines ✔)]
-```
+ Context switches (quanta executed)     expected 26       observed 26       ✔
+  Completed processes                    expected 13       observed 13       ✔
+  Total service time (ms)                expected 93420    observed 93420    ✔
+  Busy-waiting polls (must be 0)         expected 0        observed 0        ✔
+  ✔ All shared values are consistent. 
+  ```
 
 **Explanation of the timeline:**
-[Explain the lost update step by step.]
+CPU-1 reads contextSwitchCount = 5 and sleeps in RaceWindow.pause() CPU-2 also reads 5 CPU-1 writes 6 and CPU-2 writes 6. It should be 7 so one update is lost 
 
 ## Question 2: Critical Sections and Lock Granularity
 
@@ -336,12 +345,16 @@ Verification block of **my final version**:
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
+I used one lock for each counter because they are separate so one update does not stop the others but I have more locks The queue has its own lock so CPU using the counters do not block the queue each lock lets only one thread in which is mutual exclusion reentrantLock iss not fair but the critical sections are short so every thread gets in
+
 
 | Critical section (variable / method) | Lock used | Why it needs protection |
 |---|---|---|
-| [e.g., `ReadyQueue.poll()`] | [lock name] | [reason] |
-| [...] | [...] | [...] |
+| `ReadyQueue.add()`- `poll()`- `processOf()`-`snapshot()` | `queueLock` | many CPUs read and change the list and map at the same time |
+| `contextSwitchCount` (increment+getter)| `contextSwitchLock`|read and write can lose an update |
+| `completedProcessCount` (increment+getter) |`completedLock`| a lost update made completed 12/13 and the watchdog stopped |
+| `totalServiceTime` (add+getter)| `serviceTimeLock` |read and write can lose an update |
+
 
 ## Question 3: Busy Waiting vs Semaphore
 
@@ -351,8 +364,7 @@ Verification block of **my final version**:
 
 **Your Answer:** *(3-5 sentences)*
 
-[Write your answer here.]
-
+In the starter a CPU kept checking the empty queue which made 826 busy waiting polls my semaphore counts the processes in the queue it starts at 0 because the queue is empty and becomes 13 after the 13 add() calls The last CPU calls release(totalCPUs) to wake the sleeping CPUs without it they wait forever
 ## Question 4: Classical Problems and Deadlock
 
 **Question**: The CPUs and the ready queue look like a classical synchronization problem of Chapter 5. **Name it**, and say who plays the **producer** and the **consumer** roles (careful: here the CPUs also re-enqueue processes). If the ready queue were **bounded** (capacity `K`), name the **three semaphores** you would need and their **initial values**. Describe a **deadlock scenario** that appears if a thread acquired the **mutex before** waiting on the semaphore (or if two locks were acquired in different orders), and say **which of the four necessary conditions** you would break to prevent it.
@@ -362,24 +374,23 @@ Verification block of **my final version**:
 **Your Answer:** *(3-5 sentences)*
 
 **Classical problem and roles**:
-[Name the problem; who is the producer, who is the consumer?]
+Producer-consumer problem producer is main and the CPUs that put a process back consumer is the CPU thaat take a process
 
 **Semaphores for a bounded queue (name and initial value)**:
-[Name the three semaphores and their initial values.]
+empty = K, full = 0, mutex = 1
 
 **Deadlock scenario and prevention**:
-[Describe the scenario and the necessary condition you would break.]
-
+if a CPU takes the mutex and waits on empty while the queue is full nobody can take the mutex to free a slot all wait forever i break hold and wait by waiting on the semaphore before taking the mutex
 ## Summary
 
 **Key concepts I understood through these questions:**
-1.
-2.
-3.
+1. Race condition and lost updates
+2. mutual exclusion with ReentrantLock and finally
+3. counting semaphore instead of busy waiting
 
 **Concepts I need to study more:**
-1.
-2.
+1. Deadlock prevention
+2. fairness and starvation
 
 ---
 
