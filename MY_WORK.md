@@ -42,7 +42,7 @@
 
 ## 🎥 Video Link
 
-**Video Link**: [Paste your video link here]
+**Video Link**:https://drive.google.com/file/d/1Qh41XwMRNsaoEG-bx60zgeDxociAMM9z/view?usp=sharing
 
 > ⚠️ **WARNING:** The video must be **publicly accessible** ("Anyone with the link can view") on **Google Drive**, **YouTube (Unlisted or Public)** or any other cloud file-sharing system. A private, restricted or broken link counts as a **missing video (-1 mark)**.
 >
@@ -381,6 +381,7 @@ empty = K, full = 0, mutex = 1
 
 **Deadlock scenario and prevention**:
 if a CPU takes the mutex and waits on empty while the queue is full nobody can take the mutex to free a slot all wait forever i break hold and wait by waiting on the semaphore before taking the mutex
+
 ## Summary
 
 **Key concepts I understood through these questions:**
